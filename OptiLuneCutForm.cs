@@ -15,6 +15,7 @@ namespace OptiLineCut {
   public partial class OptiLuneCutForm : Form {
     private List<OrderPair> order = new List<OrderPair>();
     private double cutThick = 0.05;
+    private src.SMethod.SimplexMethodSolver solver = null;
 
     public OptiLuneCutForm() {
       InitializeComponent();
@@ -46,7 +47,9 @@ namespace OptiLineCut {
           task.AddOrder(pair);
 
         task.Compute();
-        fillTable(task);
+        fillTableAndSimplexMethod(task);
+
+
       }
       catch (Exception ex) {
         MessageBox.Show(ex.Message);
@@ -78,8 +81,8 @@ namespace OptiLineCut {
 
       if (dr != System.Windows.Forms.DialogResult.OK)
         return;
-
-      lbxOrderDetails.Items.Add("Detail_" + lbxOrderDetails.Items.Count.ToString() + "    num:" + sForm.Count.ToString());
+      int c = sForm.Count;
+      lbxOrderDetails.Items.Add("Detail_" + lbxOrderDetails.Items.Count.ToString() + "    num:" + c.ToString());
       order.Add(new OrderPair(sForm.Detail, sForm.Count));
     }
 
@@ -101,7 +104,7 @@ namespace OptiLineCut {
       }
     }
 
-    private void fillTable(Task task) {
+    private void fillTableAndSimplexMethod(Task task) {
       dgvAllCuts.Rows.Clear();
       dgvAllCuts.Columns.Clear();
 
@@ -120,13 +123,16 @@ namespace OptiLineCut {
       dgvAllCuts.Rows.Add(str);
       dgvAllCuts.Rows[0].DefaultCellStyle.BackColor = Color.LightGray;
 
+      List<src.SMethod.Limitation> limits = new List<src.SMethod.Limitation>();
       OrderPair pair = task.order.First();
       while (pair != null) {
         str[0] = pair.Detail.Volume.ToString();
         str[task.AllCuts.Count + 1] = pair.Num.ToString();
 
+        limits.Add(new src.SMethod.Limitation(new double[] { }, pair.Num, src.SMethod.Limitation.Type.Equal));
         for (int i = 0; i < task.AllCuts.Count; i++) {
           str[i + 1] = task.AllCuts[i].CountOf(pair.Detail).ToString();
+          limits.Last().equaLine.koeffs.Add(task.AllCuts[i].CountOf(pair.Detail));
         }
         dgvAllCuts.Rows.Add(str);
         pair = task.GetNextOrderPair(pair);
@@ -135,10 +141,21 @@ namespace OptiLineCut {
       dgvAllCuts.Rows.Add(str2);
       str[0] = "left";
       str[task.AllCuts.Count + 1] = "";
+
+      src.SMethod.EquaLine equa = new src.SMethod.EquaLine(new double[]{},0.0);
       for (int i = 0; i < task.AllCuts.Count; i++) {
-        str[i + 1] = Math.Round(task.AllCuts[i].Left, 3).ToString();
+        str[i + 1] = Math.Round(task.AllCuts[i].Left, 3).ToString().Replace(',','.');
+        equa.koeffs.Add(task.AllCuts[i].Left);
       }
+
+      src.SMethod.Task sTask = new src.SMethod.Task(equa);
+      foreach (src.SMethod.Limitation limit in limits)
+        sTask.limitations.Add(limit);
+      solver = new src.SMethod.SimplexMethodSolver(sTask);
+
       dgvAllCuts.Rows.Add(str);
+      solver.calculateOptimalPlan();
+      FillTable(dgvSimplexMethod, solver);
     }
 
     private void mnuFilESaveTask_Click(object sender, EventArgs e) {
@@ -281,7 +298,6 @@ namespace OptiLineCut {
 
     private void lbxOrderDetails_DoubleClick(object sender, EventArgs e) {
       int ind = lbxOrderDetails.SelectedIndex;
-
       if (ind == -1) return;
 
       OrderForm sForm = new OrderForm(order[ind].Detail, order[ind].Num);
@@ -290,10 +306,64 @@ namespace OptiLineCut {
       if (dr != System.Windows.Forms.DialogResult.OK)
         return;
 
-      lbxOrderDetails.Items[ind] = ("Detail_" + ind.ToString() + "   num:" + sForm.Count.ToString());
+      int c = sForm.Count;
+      lbxOrderDetails.Items[ind] = ("Detail_" + ind.ToString() + "   num:" + c.ToString());
       order[ind] = new OrderPair(sForm.Detail, sForm.Count);
 
       pgrdOrderDetail.SelectedObject = order[ind].Detail;
+    }
+
+    private void btnRemoveOrderDet_Click(object sender, EventArgs e) {
+      int ind = lbxOrderDetails.SelectedIndex;
+      if (ind == -1) return;
+
+      lbxOrderDetails.SelectedIndex = 0;
+      pgrdOrderDetail.SelectedObject = null;
+      lbxOrderDetails.Items.RemoveAt(ind);
+      order.RemoveAt(ind);
+    }
+
+    private void FillTable(DataGridView dgv, src.SMethod.SimplexMethodSolver slv) {
+      dgv.Rows.Clear();
+      dgv.Columns.Clear();
+      if (slv.errMsg != "OK") {
+        MessageBox.Show(slv.errMsg, "Симплекс-метод", MessageBoxButtons.OK);
+      }
+
+      String[] strs = new String[slv.xsStr.Count + 2];
+      strs[0] = "";
+
+      for (int i = 0; i < slv.xsStr.Count; i++)
+        strs[i + 1] = "-x" + slv.xsStr[i].ToString();
+      strs[slv.xsStr.Count + 1] = "1";
+
+      for (int i = 0; i < slv.xsStr.Count + 2; i++)
+        dgv.Columns.Add("", strs[i]);
+      dgv.Columns[0].DefaultCellStyle.BackColor = Color.LightGray;
+      dgv.Rows.Add(strs);
+      dgv.Rows[0].DefaultCellStyle.BackColor = Color.LightGray;
+      dgv.Columns[0].Width = 50;
+      for (int i = 0; i < slv.xsCol.Count - 1; i++) {
+        strs = new String[slv.xsStr.Count + 2];
+        int index = 0;
+        if (slv.xsCol[i] != 0)
+          strs[index] = "x" + slv.xsCol[i].ToString() + "=";
+        else
+          strs[index] = "0=";
+
+        index++;
+        for (int j = 0; j < slv.table.GetLength(1); j++) {
+          strs[index] += slv.table[i, j].ToString().Replace(',', '.');
+          index++;
+        }
+        dgv.Rows.Add(strs);
+      }
+      strs = new String[slv.xsStr.Count + 2];
+      strs[0] = "Q";
+      for (int i = 0; i < slv.table.GetLength(1); i++)
+        strs[i + 1] = Math.Abs(slv.table[slv.table.GetLength(0) - 1, i]).ToString().Replace(',', '.') + "\t";
+
+      dgv.Rows.Add(strs);
     }
   }
 }

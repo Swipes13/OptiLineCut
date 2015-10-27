@@ -48,8 +48,12 @@
       this.label2 = new System.Windows.Forms.Label();
       this.cmbDimension = new System.Windows.Forms.ComboBox();
       this.label1 = new System.Windows.Forms.Label();
-      this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+      this.splWork = new System.Windows.Forms.SplitContainer();
       this.dgvAllCuts = new System.Windows.Forms.DataGridView();
+      this.label6 = new System.Windows.Forms.Label();
+      this.label7 = new System.Windows.Forms.Label();
+      this.splMain = new System.Windows.Forms.SplitContainer();
+      this.dgvSimplexMethod = new System.Windows.Forms.DataGridView();
       this.menuStrip1.SuspendLayout();
       this.pnlLeft.SuspendLayout();
       this.pnlTaskMain.SuspendLayout();
@@ -57,10 +61,16 @@
       this.panel2.SuspendLayout();
       this.panel4.SuspendLayout();
       this.panel1.SuspendLayout();
-      ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
-      this.splitContainer1.Panel1.SuspendLayout();
-      this.splitContainer1.SuspendLayout();
+      ((System.ComponentModel.ISupportInitialize)(this.splWork)).BeginInit();
+      this.splWork.Panel1.SuspendLayout();
+      this.splWork.Panel2.SuspendLayout();
+      this.splWork.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)(this.dgvAllCuts)).BeginInit();
+      ((System.ComponentModel.ISupportInitialize)(this.splMain)).BeginInit();
+      this.splMain.Panel1.SuspendLayout();
+      this.splMain.Panel2.SuspendLayout();
+      this.splMain.SuspendLayout();
+      ((System.ComponentModel.ISupportInitialize)(this.dgvSimplexMethod)).BeginInit();
       this.SuspendLayout();
       // 
       // menuStrip1
@@ -114,12 +124,12 @@
       // 
       this.pnlLeft.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
       this.pnlLeft.Controls.Add(this.pnlTaskMain);
-      this.pnlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-      this.pnlLeft.Location = new System.Drawing.Point(0, 24);
+      this.pnlLeft.Dock = System.Windows.Forms.DockStyle.Fill;
+      this.pnlLeft.Location = new System.Drawing.Point(0, 0);
       this.pnlLeft.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
       this.pnlLeft.Name = "pnlLeft";
       this.pnlLeft.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-      this.pnlLeft.Size = new System.Drawing.Size(249, 609);
+      this.pnlLeft.Size = new System.Drawing.Size(220, 609);
       this.pnlLeft.TabIndex = 1;
       // 
       // pnlTaskMain
@@ -136,7 +146,7 @@
       this.pnlTaskMain.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
       this.pnlTaskMain.Name = "pnlTaskMain";
       this.pnlTaskMain.Padding = new System.Windows.Forms.Padding(1);
-      this.pnlTaskMain.Size = new System.Drawing.Size(243, 540);
+      this.pnlTaskMain.Size = new System.Drawing.Size(214, 540);
       this.pnlTaskMain.TabIndex = 0;
       // 
       // panel3
@@ -151,25 +161,28 @@
       this.panel3.Location = new System.Drawing.Point(1, 226);
       this.panel3.Name = "panel3";
       this.panel3.Padding = new System.Windows.Forms.Padding(3);
-      this.panel3.Size = new System.Drawing.Size(241, 265);
+      this.panel3.Size = new System.Drawing.Size(212, 265);
       this.panel3.TabIndex = 7;
       // 
       // btnRemoveOrderDet
       // 
+      this.btnRemoveOrderDet.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
       this.btnRemoveOrderDet.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
       this.btnRemoveOrderDet.Font = new System.Drawing.Font("Trebuchet MS", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-      this.btnRemoveOrderDet.Location = new System.Drawing.Point(215, 51);
+      this.btnRemoveOrderDet.Location = new System.Drawing.Point(186, 51);
       this.btnRemoveOrderDet.Name = "btnRemoveOrderDet";
       this.btnRemoveOrderDet.Size = new System.Drawing.Size(22, 26);
       this.btnRemoveOrderDet.TabIndex = 7;
       this.btnRemoveOrderDet.Text = "-";
       this.btnRemoveOrderDet.UseVisualStyleBackColor = true;
+      this.btnRemoveOrderDet.Click += new System.EventHandler(this.btnRemoveOrderDet_Click);
       // 
       // btnAddOrderDet
       // 
+      this.btnAddOrderDet.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
       this.btnAddOrderDet.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
       this.btnAddOrderDet.Font = new System.Drawing.Font("Trebuchet MS", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-      this.btnAddOrderDet.Location = new System.Drawing.Point(215, 24);
+      this.btnAddOrderDet.Location = new System.Drawing.Point(186, 24);
       this.btnAddOrderDet.Name = "btnAddOrderDet";
       this.btnAddOrderDet.Size = new System.Drawing.Size(22, 26);
       this.btnAddOrderDet.TabIndex = 6;
@@ -179,12 +192,14 @@
       // 
       // lbxOrderDetails
       // 
-      this.lbxOrderDetails.Dock = System.Windows.Forms.DockStyle.Left;
+      this.lbxOrderDetails.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
       this.lbxOrderDetails.FormattingEnabled = true;
       this.lbxOrderDetails.ItemHeight = 16;
       this.lbxOrderDetails.Location = new System.Drawing.Point(3, 24);
       this.lbxOrderDetails.Name = "lbxOrderDetails";
-      this.lbxOrderDetails.Size = new System.Drawing.Size(209, 135);
+      this.lbxOrderDetails.Size = new System.Drawing.Size(180, 132);
       this.lbxOrderDetails.TabIndex = 5;
       this.lbxOrderDetails.SelectedIndexChanged += new System.EventHandler(this.lbxOrderDetails_SelectedIndexChanged);
       this.lbxOrderDetails.DoubleClick += new System.EventHandler(this.lbxOrderDetails_DoubleClick);
@@ -195,7 +210,7 @@
       this.pgrdOrderDetail.HelpVisible = false;
       this.pgrdOrderDetail.Location = new System.Drawing.Point(3, 159);
       this.pgrdOrderDetail.Name = "pgrdOrderDetail";
-      this.pgrdOrderDetail.Size = new System.Drawing.Size(235, 103);
+      this.pgrdOrderDetail.Size = new System.Drawing.Size(206, 103);
       this.pgrdOrderDetail.TabIndex = 4;
       this.pgrdOrderDetail.ToolbarVisible = false;
       // 
@@ -206,7 +221,7 @@
       this.label4.Font = new System.Drawing.Font("Trebuchet MS", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
       this.label4.Location = new System.Drawing.Point(3, 3);
       this.label4.Name = "label4";
-      this.label4.Size = new System.Drawing.Size(235, 21);
+      this.label4.Size = new System.Drawing.Size(206, 21);
       this.label4.TabIndex = 1;
       this.label4.Text = "Заказ";
       this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -217,7 +232,7 @@
       this.btnCompute.Font = new System.Drawing.Font("Trebuchet MS", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
       this.btnCompute.Location = new System.Drawing.Point(1, 511);
       this.btnCompute.Name = "btnCompute";
-      this.btnCompute.Size = new System.Drawing.Size(241, 28);
+      this.btnCompute.Size = new System.Drawing.Size(212, 28);
       this.btnCompute.TabIndex = 6;
       this.btnCompute.Text = "Решить";
       this.btnCompute.UseVisualStyleBackColor = true;
@@ -232,7 +247,7 @@
       this.panel2.Location = new System.Drawing.Point(1, 88);
       this.panel2.Name = "panel2";
       this.panel2.Padding = new System.Windows.Forms.Padding(3);
-      this.panel2.Size = new System.Drawing.Size(241, 138);
+      this.panel2.Size = new System.Drawing.Size(212, 138);
       this.panel2.TabIndex = 5;
       // 
       // pgrdTest
@@ -241,7 +256,7 @@
       this.pgrdTest.HelpVisible = false;
       this.pgrdTest.Location = new System.Drawing.Point(3, 24);
       this.pgrdTest.Name = "pgrdTest";
-      this.pgrdTest.Size = new System.Drawing.Size(235, 111);
+      this.pgrdTest.Size = new System.Drawing.Size(206, 111);
       this.pgrdTest.TabIndex = 4;
       this.pgrdTest.ToolbarVisible = false;
       // 
@@ -252,7 +267,7 @@
       this.label3.Font = new System.Drawing.Font("Trebuchet MS", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
       this.label3.Location = new System.Drawing.Point(3, 3);
       this.label3.Name = "label3";
-      this.label3.Size = new System.Drawing.Size(235, 21);
+      this.label3.Size = new System.Drawing.Size(206, 21);
       this.label3.TabIndex = 1;
       this.label3.Text = "Заготовка";
       this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -266,13 +281,13 @@
       this.panel4.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
       this.panel4.Name = "panel4";
       this.panel4.Padding = new System.Windows.Forms.Padding(3);
-      this.panel4.Size = new System.Drawing.Size(241, 27);
+      this.panel4.Size = new System.Drawing.Size(212, 27);
       this.panel4.TabIndex = 8;
       // 
       // tbxCutTHick
       // 
       this.tbxCutTHick.Dock = System.Windows.Forms.DockStyle.Right;
-      this.tbxCutTHick.Location = new System.Drawing.Point(144, 3);
+      this.tbxCutTHick.Location = new System.Drawing.Point(115, 3);
       this.tbxCutTHick.Name = "tbxCutTHick";
       this.tbxCutTHick.Size = new System.Drawing.Size(94, 20);
       this.tbxCutTHick.TabIndex = 3;
@@ -299,7 +314,7 @@
       this.panel1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
       this.panel1.Name = "panel1";
       this.panel1.Padding = new System.Windows.Forms.Padding(3);
-      this.panel1.Size = new System.Drawing.Size(241, 30);
+      this.panel1.Size = new System.Drawing.Size(212, 30);
       this.panel1.TabIndex = 3;
       // 
       // label2
@@ -321,7 +336,7 @@
       this.cmbDimension.Items.AddRange(new object[] {
             "1",
             "2"});
-      this.cmbDimension.Location = new System.Drawing.Point(199, 3);
+      this.cmbDimension.Location = new System.Drawing.Point(170, 3);
       this.cmbDimension.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
       this.cmbDimension.Name = "cmbDimension";
       this.cmbDimension.Size = new System.Drawing.Size(39, 24);
@@ -335,24 +350,32 @@
       this.label1.Font = new System.Drawing.Font("Trebuchet MS", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
       this.label1.Location = new System.Drawing.Point(1, 1);
       this.label1.Name = "label1";
-      this.label1.Size = new System.Drawing.Size(241, 30);
+      this.label1.Size = new System.Drawing.Size(212, 30);
       this.label1.TabIndex = 0;
       this.label1.Text = "Задача";
       this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
       // 
-      // splitContainer1
+      // splWork
       // 
-      this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-      this.splitContainer1.Location = new System.Drawing.Point(249, 24);
-      this.splitContainer1.Name = "splitContainer1";
-      this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+      this.splWork.Dock = System.Windows.Forms.DockStyle.Fill;
+      this.splWork.Location = new System.Drawing.Point(0, 0);
+      this.splWork.Name = "splWork";
+      this.splWork.Orientation = System.Windows.Forms.Orientation.Horizontal;
       // 
-      // splitContainer1.Panel1
+      // splWork.Panel1
       // 
-      this.splitContainer1.Panel1.Controls.Add(this.dgvAllCuts);
-      this.splitContainer1.Size = new System.Drawing.Size(563, 609);
-      this.splitContainer1.SplitterDistance = 155;
-      this.splitContainer1.TabIndex = 2;
+      this.splWork.Panel1.Controls.Add(this.dgvAllCuts);
+      this.splWork.Panel1.Controls.Add(this.label6);
+      this.splWork.Panel1MinSize = 100;
+      // 
+      // splWork.Panel2
+      // 
+      this.splWork.Panel2.Controls.Add(this.dgvSimplexMethod);
+      this.splWork.Panel2.Controls.Add(this.label7);
+      this.splWork.Panel2MinSize = 100;
+      this.splWork.Size = new System.Drawing.Size(588, 609);
+      this.splWork.SplitterDistance = 155;
+      this.splWork.TabIndex = 2;
       // 
       // dgvAllCuts
       // 
@@ -365,23 +388,81 @@
       this.dgvAllCuts.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
       this.dgvAllCuts.ColumnHeadersVisible = false;
       this.dgvAllCuts.Dock = System.Windows.Forms.DockStyle.Fill;
-      this.dgvAllCuts.Location = new System.Drawing.Point(0, 0);
+      this.dgvAllCuts.Location = new System.Drawing.Point(0, 23);
       this.dgvAllCuts.Name = "dgvAllCuts";
       this.dgvAllCuts.ReadOnly = true;
       this.dgvAllCuts.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Sunken;
       this.dgvAllCuts.RowHeadersVisible = false;
       this.dgvAllCuts.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
       this.dgvAllCuts.ShowEditingIcon = false;
-      this.dgvAllCuts.Size = new System.Drawing.Size(563, 155);
+      this.dgvAllCuts.Size = new System.Drawing.Size(588, 132);
       this.dgvAllCuts.TabIndex = 1;
+      // 
+      // label6
+      // 
+      this.label6.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+      this.label6.Dock = System.Windows.Forms.DockStyle.Top;
+      this.label6.Font = new System.Drawing.Font("Trebuchet MS", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+      this.label6.Location = new System.Drawing.Point(0, 0);
+      this.label6.Name = "label6";
+      this.label6.Size = new System.Drawing.Size(588, 23);
+      this.label6.TabIndex = 2;
+      this.label6.Text = "Варианты раскроя";
+      this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+      // 
+      // label7
+      // 
+      this.label7.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+      this.label7.Dock = System.Windows.Forms.DockStyle.Top;
+      this.label7.Font = new System.Drawing.Font("Trebuchet MS", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+      this.label7.Location = new System.Drawing.Point(0, 0);
+      this.label7.Name = "label7";
+      this.label7.Size = new System.Drawing.Size(588, 23);
+      this.label7.TabIndex = 3;
+      this.label7.Text = "Симплекс";
+      this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+      // 
+      // splMain
+      // 
+      this.splMain.Dock = System.Windows.Forms.DockStyle.Fill;
+      this.splMain.Location = new System.Drawing.Point(0, 24);
+      this.splMain.Name = "splMain";
+      // 
+      // splMain.Panel1
+      // 
+      this.splMain.Panel1.Controls.Add(this.pnlLeft);
+      this.splMain.Panel1MinSize = 220;
+      // 
+      // splMain.Panel2
+      // 
+      this.splMain.Panel2.Controls.Add(this.splWork);
+      this.splMain.Panel2MinSize = 300;
+      this.splMain.Size = new System.Drawing.Size(812, 609);
+      this.splMain.SplitterDistance = 220;
+      this.splMain.TabIndex = 3;
+      // 
+      // dgvSimplexMethod
+      // 
+      this.dgvSimplexMethod.AllowUserToAddRows = false;
+      this.dgvSimplexMethod.AllowUserToDeleteRows = false;
+      this.dgvSimplexMethod.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+      this.dgvSimplexMethod.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
+      this.dgvSimplexMethod.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+      this.dgvSimplexMethod.ColumnHeadersVisible = false;
+      this.dgvSimplexMethod.Dock = System.Windows.Forms.DockStyle.Fill;
+      this.dgvSimplexMethod.Location = new System.Drawing.Point(0, 23);
+      this.dgvSimplexMethod.Name = "dgvSimplexMethod";
+      this.dgvSimplexMethod.RowHeadersVisible = false;
+      this.dgvSimplexMethod.RowHeadersWidth = 10;
+      this.dgvSimplexMethod.Size = new System.Drawing.Size(588, 427);
+      this.dgvSimplexMethod.TabIndex = 4;
       // 
       // OptiLuneCutForm
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 16F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
       this.ClientSize = new System.Drawing.Size(812, 633);
-      this.Controls.Add(this.splitContainer1);
-      this.Controls.Add(this.pnlLeft);
+      this.Controls.Add(this.splMain);
       this.Controls.Add(this.menuStrip1);
       this.Font = new System.Drawing.Font("Trebuchet MS", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
       this.MainMenuStrip = this.menuStrip1;
@@ -398,10 +479,16 @@
       this.panel4.ResumeLayout(false);
       this.panel4.PerformLayout();
       this.panel1.ResumeLayout(false);
-      this.splitContainer1.Panel1.ResumeLayout(false);
-      ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
-      this.splitContainer1.ResumeLayout(false);
+      this.splWork.Panel1.ResumeLayout(false);
+      this.splWork.Panel2.ResumeLayout(false);
+      ((System.ComponentModel.ISupportInitialize)(this.splWork)).EndInit();
+      this.splWork.ResumeLayout(false);
       ((System.ComponentModel.ISupportInitialize)(this.dgvAllCuts)).EndInit();
+      this.splMain.Panel1.ResumeLayout(false);
+      this.splMain.Panel2.ResumeLayout(false);
+      ((System.ComponentModel.ISupportInitialize)(this.splMain)).EndInit();
+      this.splMain.ResumeLayout(false);
+      ((System.ComponentModel.ISupportInitialize)(this.dgvSimplexMethod)).EndInit();
       this.ResumeLayout(false);
       this.PerformLayout();
 
@@ -431,11 +518,15 @@
     private System.Windows.Forms.Panel panel4;
     private System.Windows.Forms.Label label5;
     private System.Windows.Forms.TextBox tbxCutTHick;
-    private System.Windows.Forms.SplitContainer splitContainer1;
+    private System.Windows.Forms.SplitContainer splWork;
     private System.Windows.Forms.DataGridView dgvAllCuts;
     private System.Windows.Forms.ToolStripMenuItem mnuFilESaveTask;
     private System.Windows.Forms.ToolStripMenuItem mnuFilELoadTask;
     private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+    private System.Windows.Forms.SplitContainer splMain;
+    private System.Windows.Forms.Label label6;
+    private System.Windows.Forms.Label label7;
+    private System.Windows.Forms.DataGridView dgvSimplexMethod;
   }
 }
 

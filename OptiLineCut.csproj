@@ -64,6 +64,7 @@
       <DependentUpon>OrderForm.cs</DependentUpon>
     </Compile>
     <Compile Include="src\OrderPair.cs" />
+    <Compile Include="src\SimplexMethod.cs" />
     <Compile Include="src\Task.cs" />
     <EmbeddedResource Include="OptiLuneCutForm.resx">
       <DependentUpon>OptiLuneCutForm.cs</DependentUpon>
