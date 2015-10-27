@@ -1,24 +1,29 @@
 ﻿using System;
+using System.Windows.Forms;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel;
 
 namespace OptiLineCut.src {
   public class Detail1D : Detail {
-    private Detail1D() { Dimension = 1; }
-    public Detail1D(double[] size_) {
+    [CategoryAttribute("Настраиваемые параметры"), DescriptionAttribute("Длина")]
+    public double Length { get { return size[0]; } set { size[0] = value; calculateVolume(); parent.Refresh(); } }
+
+    protected Detail1D() { Dimension = 1; }
+
+    public Detail1D(PropertyGrid grdParent, double[] size_) {
+      parent = grdParent;
       Dimension = 1;
       if (size_.Count() != Dimension)
         throw new InvalidOperationException("Деталь имеет размерность меньшую, чем Вы ожидали :)");
 
       size = new double[Dimension];
-
-      Volume = 1.0;
-      for (int i = 0; i < size_.Count(); i++) {
+      for (int i = 0; i < size_.Count(); i++) 
         size[i] = size_[i];
-        Volume *= size_[i];
-      }
+
+      calculateVolume();
     }
 
     public override Cut Fill(Detail det, double sect) {
@@ -36,5 +41,10 @@ namespace OptiLineCut.src {
       return retCut;
     }
 
+    protected override void calculateVolume() {
+      Volume = 1.0;
+      for (int i = 0; i < size.Count(); i++) 
+        Volume *= size[i];
+    }
   }
 }

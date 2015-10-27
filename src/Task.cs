@@ -31,11 +31,8 @@ namespace OptiLineCut.src {
       return null;
     }
 
-    public Task(int dim, Detail billet_) {
-      Dimension = dim;
-      if (billet_.Dimension != Dimension)
-        throw new InvalidOperationException("Размерность заготовки не совпадает с размерностью самой задачи!");
-
+    public Task(Detail billet_) {
+      Dimension = billet_.Dimension;
       billet = billet_;
     }
 
