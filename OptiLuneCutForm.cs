@@ -47,8 +47,11 @@ namespace OptiLineCut {
           task.AddOrder(pair);
 
         task.Compute();
-        fillTableAndSimplexMethod(task);
+        fillTableCutAndSimplexMethod(task);
 
+        fillTableSimplexMethod(dgvSimplexMethod, solver);
+
+        fillTableResult(dgvResult, task, solver);
 
       }
       catch (Exception ex) {
@@ -104,7 +107,7 @@ namespace OptiLineCut {
       }
     }
 
-    private void fillTableAndSimplexMethod(Task task) {
+    private void fillTableCutAndSimplexMethod(Task task) {
       dgvAllCuts.Rows.Clear();
       dgvAllCuts.Columns.Clear();
 
@@ -155,7 +158,6 @@ namespace OptiLineCut {
 
       dgvAllCuts.Rows.Add(str);
       solver.calculateOptimalPlan();
-      FillTable(dgvSimplexMethod, solver);
     }
 
     private void mnuFilESaveTask_Click(object sender, EventArgs e) {
@@ -323,7 +325,7 @@ namespace OptiLineCut {
       order.RemoveAt(ind);
     }
 
-    private void FillTable(DataGridView dgv, src.SMethod.SimplexMethodSolver slv) {
+    private void fillTableSimplexMethod(DataGridView dgv, src.SMethod.SimplexMethodSolver slv) {
       dgv.Rows.Clear();
       dgv.Columns.Clear();
       if (slv.errMsg != "OK") {
@@ -364,6 +366,46 @@ namespace OptiLineCut {
         strs[i + 1] = Math.Abs(slv.table[slv.table.GetLength(0) - 1, i]).ToString().Replace(',', '.') + "\t";
 
       dgv.Rows.Add(strs);
+    }
+
+    private void fillTableResult(DataGridView dgv, Task task, src.SMethod.SimplexMethodSolver slv) {
+      dgv.Rows.Clear();
+      dgv.Columns.Clear();
+
+      String[] strs = new String[2];
+      strs[0] = "Число заготовок:";
+      strs[1] = "Разрез:";
+
+      dgv.Columns.Add("", ""); dgv.Columns.Add("", "");
+
+      dgv.Rows.Add(strs);
+      dgv.Rows[0].DefaultCellStyle.BackColor = Color.LightGray;
+      dgv.Columns[0].Width = 150;
+
+      for (int i = 0; i < slv.xsCol.Count - 1; i++) {
+        if(slv.table[i, slv.table.GetLength(1) - 1] == 0.0) continue;
+        strs[0] = slv.table[i, slv.table.GetLength(1) - 1].ToString().Replace(',', '.');
+        strs[1] = "";
+        foreach (OrderPair p in task.AllCuts[slv.xsCol[i] - 1].Pairs) {
+          for (int j = 0; j < p.Num; j++) {
+            strs[1] += ((Detail1D)p.Detail).Length;
+            if (j == p.Num - 1) {
+              if (p != task.AllCuts[slv.xsCol[i] - 1].Pairs.Last())
+                strs[1] += ",";
+            }
+            else
+              strs[1] += ",";
+          }
+        }
+        //strs[1] = slv.xsCol[i].ToString();
+        dgv.Rows.Add(strs);
+      }
+      strs[0] = strs[1] = "";
+      dgv.Rows.Add(strs);
+      strs[0] = "Остатки:";
+      strs[1] = slv.table[slv.table.GetLength(0) - 1, slv.table.GetLength(1) - 1].ToString().Replace(',','.');
+      dgv.Rows.Add(strs);
+      dgv.Rows[dgv.Rows.Count-1].DefaultCellStyle.BackColor = Color.Gray;
     }
   }
 }
