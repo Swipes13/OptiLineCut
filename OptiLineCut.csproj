@@ -55,7 +55,9 @@
     <Compile Include="src\Cut.cs" />
     <Compile Include="src\Detail.cs" />
     <Compile Include="src\Detail1D.cs" />
+    <Compile Include="src\Order.cs" />
     <Compile Include="src\OrderPair.cs" />
+    <Compile Include="src\Task.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
