@@ -25,6 +25,9 @@
     private void InitializeComponent() {
       this.menuStrip1 = new System.Windows.Forms.MenuStrip();
       this.mnuFile = new System.Windows.Forms.ToolStripMenuItem();
+      this.mnuFilESaveTask = new System.Windows.Forms.ToolStripMenuItem();
+      this.mnuFilELoadTask = new System.Windows.Forms.ToolStripMenuItem();
+      this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
       this.mnuFileExit = new System.Windows.Forms.ToolStripMenuItem();
       this.pnlLeft = new System.Windows.Forms.Panel();
       this.pnlTaskMain = new System.Windows.Forms.Panel();
@@ -38,25 +41,22 @@
       this.panel2 = new System.Windows.Forms.Panel();
       this.pgrdTest = new System.Windows.Forms.PropertyGrid();
       this.label3 = new System.Windows.Forms.Label();
+      this.panel4 = new System.Windows.Forms.Panel();
+      this.tbxCutTHick = new System.Windows.Forms.TextBox();
+      this.label5 = new System.Windows.Forms.Label();
       this.panel1 = new System.Windows.Forms.Panel();
       this.label2 = new System.Windows.Forms.Label();
       this.cmbDimension = new System.Windows.Forms.ComboBox();
       this.label1 = new System.Windows.Forms.Label();
-      this.panel4 = new System.Windows.Forms.Panel();
-      this.label5 = new System.Windows.Forms.Label();
-      this.tbxCutTHick = new System.Windows.Forms.TextBox();
       this.splitContainer1 = new System.Windows.Forms.SplitContainer();
       this.dgvAllCuts = new System.Windows.Forms.DataGridView();
-      this.mnuFilESaveTask = new System.Windows.Forms.ToolStripMenuItem();
-      this.mnuFilELoadTask = new System.Windows.Forms.ToolStripMenuItem();
-      this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
       this.menuStrip1.SuspendLayout();
       this.pnlLeft.SuspendLayout();
       this.pnlTaskMain.SuspendLayout();
       this.panel3.SuspendLayout();
       this.panel2.SuspendLayout();
-      this.panel1.SuspendLayout();
       this.panel4.SuspendLayout();
+      this.panel1.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
       this.splitContainer1.Panel1.SuspendLayout();
       this.splitContainer1.SuspendLayout();
@@ -84,10 +84,29 @@
       this.mnuFile.Size = new System.Drawing.Size(48, 20);
       this.mnuFile.Text = "Файл";
       // 
+      // mnuFilESaveTask
+      // 
+      this.mnuFilESaveTask.Name = "mnuFilESaveTask";
+      this.mnuFilESaveTask.Size = new System.Drawing.Size(141, 22);
+      this.mnuFilESaveTask.Text = "Сохранить...";
+      this.mnuFilESaveTask.Click += new System.EventHandler(this.mnuFilESaveTask_Click);
+      // 
+      // mnuFilELoadTask
+      // 
+      this.mnuFilELoadTask.Name = "mnuFilELoadTask";
+      this.mnuFilELoadTask.Size = new System.Drawing.Size(141, 22);
+      this.mnuFilELoadTask.Text = "Открыть...";
+      this.mnuFilELoadTask.Click += new System.EventHandler(this.mnuFilELoadTask_Click);
+      // 
+      // toolStripSeparator1
+      // 
+      this.toolStripSeparator1.Name = "toolStripSeparator1";
+      this.toolStripSeparator1.Size = new System.Drawing.Size(138, 6);
+      // 
       // mnuFileExit
       // 
       this.mnuFileExit.Name = "mnuFileExit";
-      this.mnuFileExit.Size = new System.Drawing.Size(152, 22);
+      this.mnuFileExit.Size = new System.Drawing.Size(141, 22);
       this.mnuFileExit.Text = "Выход";
       this.mnuFileExit.Click += new System.EventHandler(this.mnuFileExit_Click);
       // 
@@ -168,6 +187,7 @@
       this.lbxOrderDetails.Size = new System.Drawing.Size(209, 135);
       this.lbxOrderDetails.TabIndex = 5;
       this.lbxOrderDetails.SelectedIndexChanged += new System.EventHandler(this.lbxOrderDetails_SelectedIndexChanged);
+      this.lbxOrderDetails.DoubleClick += new System.EventHandler(this.lbxOrderDetails_DoubleClick);
       // 
       // pgrdOrderDetail
       // 
@@ -237,6 +257,39 @@
       this.label3.Text = "Заготовка";
       this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
       // 
+      // panel4
+      // 
+      this.panel4.Controls.Add(this.tbxCutTHick);
+      this.panel4.Controls.Add(this.label5);
+      this.panel4.Dock = System.Windows.Forms.DockStyle.Top;
+      this.panel4.Location = new System.Drawing.Point(1, 61);
+      this.panel4.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+      this.panel4.Name = "panel4";
+      this.panel4.Padding = new System.Windows.Forms.Padding(3);
+      this.panel4.Size = new System.Drawing.Size(241, 27);
+      this.panel4.TabIndex = 8;
+      // 
+      // tbxCutTHick
+      // 
+      this.tbxCutTHick.Dock = System.Windows.Forms.DockStyle.Right;
+      this.tbxCutTHick.Location = new System.Drawing.Point(144, 3);
+      this.tbxCutTHick.Name = "tbxCutTHick";
+      this.tbxCutTHick.Size = new System.Drawing.Size(94, 20);
+      this.tbxCutTHick.TabIndex = 3;
+      this.tbxCutTHick.Text = "0.05";
+      this.tbxCutTHick.TextChanged += new System.EventHandler(this.tbxCutTHick_TextChanged);
+      // 
+      // label5
+      // 
+      this.label5.Dock = System.Windows.Forms.DockStyle.Left;
+      this.label5.Font = new System.Drawing.Font("Trebuchet MS", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+      this.label5.Location = new System.Drawing.Point(3, 3);
+      this.label5.Name = "label5";
+      this.label5.Size = new System.Drawing.Size(132, 21);
+      this.label5.TabIndex = 2;
+      this.label5.Text = "Величина среза:";
+      this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+      // 
       // panel1
       // 
       this.panel1.Controls.Add(this.label2);
@@ -287,39 +340,6 @@
       this.label1.Text = "Задача";
       this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
       // 
-      // panel4
-      // 
-      this.panel4.Controls.Add(this.tbxCutTHick);
-      this.panel4.Controls.Add(this.label5);
-      this.panel4.Dock = System.Windows.Forms.DockStyle.Top;
-      this.panel4.Location = new System.Drawing.Point(1, 61);
-      this.panel4.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-      this.panel4.Name = "panel4";
-      this.panel4.Padding = new System.Windows.Forms.Padding(3);
-      this.panel4.Size = new System.Drawing.Size(241, 27);
-      this.panel4.TabIndex = 8;
-      // 
-      // label5
-      // 
-      this.label5.Dock = System.Windows.Forms.DockStyle.Left;
-      this.label5.Font = new System.Drawing.Font("Trebuchet MS", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-      this.label5.Location = new System.Drawing.Point(3, 3);
-      this.label5.Name = "label5";
-      this.label5.Size = new System.Drawing.Size(132, 21);
-      this.label5.TabIndex = 2;
-      this.label5.Text = "Величина среза:";
-      this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-      // 
-      // tbxCutTHick
-      // 
-      this.tbxCutTHick.Dock = System.Windows.Forms.DockStyle.Right;
-      this.tbxCutTHick.Location = new System.Drawing.Point(144, 3);
-      this.tbxCutTHick.Name = "tbxCutTHick";
-      this.tbxCutTHick.Size = new System.Drawing.Size(94, 20);
-      this.tbxCutTHick.TabIndex = 3;
-      this.tbxCutTHick.Text = "0.05";
-      this.tbxCutTHick.TextChanged += new System.EventHandler(this.tbxCutTHick_TextChanged);
-      // 
       // splitContainer1
       // 
       this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -355,25 +375,6 @@
       this.dgvAllCuts.Size = new System.Drawing.Size(563, 155);
       this.dgvAllCuts.TabIndex = 1;
       // 
-      // mnuFilESaveTask
-      // 
-      this.mnuFilESaveTask.Name = "mnuFilESaveTask";
-      this.mnuFilESaveTask.Size = new System.Drawing.Size(152, 22);
-      this.mnuFilESaveTask.Text = "Сохранить...";
-      this.mnuFilESaveTask.Click += new System.EventHandler(this.mnuFilESaveTask_Click);
-      // 
-      // mnuFilELoadTask
-      // 
-      this.mnuFilELoadTask.Name = "mnuFilELoadTask";
-      this.mnuFilELoadTask.Size = new System.Drawing.Size(152, 22);
-      this.mnuFilELoadTask.Text = "Открыть...";
-      this.mnuFilELoadTask.Click += new System.EventHandler(this.mnuFilELoadTask_Click);
-      // 
-      // toolStripSeparator1
-      // 
-      this.toolStripSeparator1.Name = "toolStripSeparator1";
-      this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
-      // 
       // OptiLuneCutForm
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 16F);
@@ -394,9 +395,9 @@
       this.pnlTaskMain.ResumeLayout(false);
       this.panel3.ResumeLayout(false);
       this.panel2.ResumeLayout(false);
-      this.panel1.ResumeLayout(false);
       this.panel4.ResumeLayout(false);
       this.panel4.PerformLayout();
+      this.panel1.ResumeLayout(false);
       this.splitContainer1.Panel1.ResumeLayout(false);
       ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
       this.splitContainer1.ResumeLayout(false);

@@ -73,25 +73,14 @@ namespace OptiLineCut {
     }
 
     private void btnAddOrderDet_Click(object sender, EventArgs e) {
-      OrderForm sForm = new OrderForm();
+      OrderForm sForm = new OrderForm(cmbDimension.SelectedIndex + 1);
       DialogResult dr = sForm.ShowDialog();
 
       if (dr != System.Windows.Forms.DialogResult.OK)
         return;
 
       lbxOrderDetails.Items.Add("Detail_" + lbxOrderDetails.Items.Count.ToString() + "    num:" + sForm.Count.ToString());
-      Detail det;
-      switch (cmbDimension.SelectedIndex) {
-        case 0:
-          det = new Detail1D(pgrdOrderDetail, new double[] { 1.0 });
-          break;
-        case 1:
-          det = new Detail2D(pgrdOrderDetail, new double[] { 1.0, 1.0 });
-          break;
-        default:
-          throw new NotImplementedException("Не реализованный код!");
-      }
-      order.Add(new OrderPair(det, sForm.Count));
+      order.Add(new OrderPair(sForm.Detail, sForm.Count));
     }
 
     private void lbxOrderDetails_SelectedIndexChanged(object sender, EventArgs e) {
@@ -288,6 +277,23 @@ namespace OptiLineCut {
           MessageBox.Show("Error: Could not read file from disk. Original error: " + ex.Message);
         }
       }
+    }
+
+    private void lbxOrderDetails_DoubleClick(object sender, EventArgs e) {
+      int ind = lbxOrderDetails.SelectedIndex;
+
+      if (ind == -1) return;
+
+      OrderForm sForm = new OrderForm(order[ind].Detail, order[ind].Num);
+      DialogResult dr = sForm.ShowDialog();
+
+      if (dr != System.Windows.Forms.DialogResult.OK)
+        return;
+
+      lbxOrderDetails.Items[ind] = ("Detail_" + ind.ToString() + "   num:" + sForm.Count.ToString());
+      order[ind] = new OrderPair(sForm.Detail, sForm.Count);
+
+      pgrdOrderDetail.SelectedObject = order[ind].Detail;
     }
   }
 }
