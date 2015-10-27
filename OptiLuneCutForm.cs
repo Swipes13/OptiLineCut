@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -149,6 +150,144 @@ namespace OptiLineCut {
         str[i + 1] = Math.Round(task.AllCuts[i].Left, 3).ToString();
       }
       dgvAllCuts.Rows.Add(str);
+    }
+
+    private void mnuFilESaveTask_Click(object sender, EventArgs e) {
+      SaveFileDialog sfd = new SaveFileDialog();
+
+      sfd.Filter = "task files (*.tsk)|*.tsk";
+      sfd.FilterIndex = 1;
+      sfd.RestoreDirectory = true;
+
+      if (sfd.ShowDialog() == DialogResult.OK) {
+        if (sfd.FileName != null) {
+          StreamWriter sw = new StreamWriter(sfd.FileName);
+
+          sw.Write("=== Задача линейного раскроя ===");
+          sw.Write(Environment.NewLine);
+          sw.Write("Размерность задачи: ");
+          sw.Write(((Detail)pgrdTest.SelectedObject).Dimension);
+          sw.Write(Environment.NewLine);
+          sw.Write("Величина среза: ");
+          sw.Write(cutThick);
+          sw.Write(Environment.NewLine);
+          sw.Write("Заготовка:");
+          sw.Write(Environment.NewLine);
+          switch (cmbDimension.SelectedIndex) {
+            case 0:
+              sw.Write(((Detail1D)pgrdTest.SelectedObject).Length);
+          sw.Write(Environment.NewLine);
+              break;
+            case 1:
+              sw.Write(((Detail2D)pgrdTest.SelectedObject).Length);
+              sw.Write(" ");
+              sw.Write(((Detail2D)pgrdTest.SelectedObject).Width);
+              sw.Write(Environment.NewLine);
+              break;
+            default:
+              throw new NotImplementedException("Не реализованный код!");
+          }
+          sw.Write("Заказ: ");
+          sw.Write(order.Count);
+          sw.Write(Environment.NewLine);
+          foreach (OrderPair pair in order) {
+            switch (cmbDimension.SelectedIndex) {
+              case 0:
+                sw.Write(pair.Num);
+                sw.Write(" ");
+                sw.Write(((Detail1D)pair.Detail).Length);
+                sw.Write(Environment.NewLine);
+                break;
+              case 1:
+                sw.Write(pair.Num);
+                sw.Write(" ");
+                sw.Write(((Detail2D)pair.Detail).Length);
+                sw.Write(" ");
+                sw.Write(((Detail2D)pair.Detail).Width);
+                sw.Write(Environment.NewLine);
+                break;
+              default:
+                throw new NotImplementedException("Не реализованный код!");
+            }
+          }
+
+
+          sw.Close();
+        }
+      }
+    }
+
+    private void mnuFilELoadTask_Click(object sender, EventArgs e) {
+      OpenFileDialog ofd = new OpenFileDialog();
+
+      ofd.InitialDirectory = "c:\\";
+      ofd.Filter = "task files (*.tsk)|*.tsk";
+      ofd.FilterIndex = 1; ofd.RestoreDirectory = true;
+
+      if (ofd.ShowDialog() == DialogResult.OK) {
+        try {
+          if (ofd.FileName != null) {
+            lbxOrderDetails.Items.Clear();
+            order.Clear();
+            pgrdOrderDetail.SelectedObject = null;
+
+            StreamReader sr = new StreamReader(ofd.FileName);
+            sr.ReadLine();
+            String st = sr.ReadLine();
+            String[] sts = st.Split(new char[]{' '});
+            int dimTask = Convert.ToInt32(sts[2]);
+            cmbDimension.SelectedIndex = dimTask - 1;
+            st = sr.ReadLine();
+            sts = st.Split(new char[] { ' ' });
+            cutThick = Convert.ToDouble(sts[2]);
+            tbxCutTHick.Text = cutThick.ToString().Replace(',','.');
+            sr.ReadLine();
+            st = sr.ReadLine();
+            sts = st.Split(new char[] { ' ' });
+
+            Detail det;
+            switch (dimTask) {
+              case 1:
+                det = new Detail1D(pgrdTest, new double[] { Convert.ToDouble(sts[0]) });
+                break;
+              case 2:
+                det = new Detail2D(pgrdTest, new double[] { Convert.ToDouble(sts[0]), Convert.ToDouble(sts[1]) });
+                break;
+              default:
+                throw new NotImplementedException("Размерность ошибка!");
+            }
+            pgrdTest.SelectedObject = det;
+
+            st = sr.ReadLine();
+            sts = st.Split(new char[] { ' ' });
+
+            int countOrder = Convert.ToInt32(sts[1]);
+            for (int i = 0; i < countOrder; i++) {
+              st = sr.ReadLine();
+              sts = st.Split(new char[] { ' ' });
+
+              Detail detOrder;
+              switch (dimTask) {
+                case 1:
+                  detOrder = new Detail1D(pgrdOrderDetail, new double[] { Convert.ToDouble(sts[1]) });
+                  break;
+                case 2:
+                  detOrder = new Detail2D(pgrdOrderDetail, new double[] { Convert.ToDouble(sts[1]), Convert.ToDouble(sts[2]) });
+                  break;
+                default:
+                  throw new NotImplementedException("Размерность ошибка!");
+              }
+              order.Add(new OrderPair(detOrder, Convert.ToInt32(sts[0])));
+              lbxOrderDetails.Items.Add("Detail_" + lbxOrderDetails.Items.Count.ToString() + "   num:" + sts[0]);
+            }
+
+            sr.Close();
+          }
+        }
+        catch (Exception ex) {
+          MessageBox.Show("Error: Could not read file from disk. Original error: " + ex.Message);
+        }
+      }
     }
   }
 }

@@ -47,6 +47,9 @@
       this.tbxCutTHick = new System.Windows.Forms.TextBox();
       this.splitContainer1 = new System.Windows.Forms.SplitContainer();
       this.dgvAllCuts = new System.Windows.Forms.DataGridView();
+      this.mnuFilESaveTask = new System.Windows.Forms.ToolStripMenuItem();
+      this.mnuFilELoadTask = new System.Windows.Forms.ToolStripMenuItem();
+      this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
       this.menuStrip1.SuspendLayout();
       this.pnlLeft.SuspendLayout();
       this.pnlTaskMain.SuspendLayout();
@@ -73,6 +76,9 @@
       // mnuFile
       // 
       this.mnuFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuFilESaveTask,
+            this.mnuFilELoadTask,
+            this.toolStripSeparator1,
             this.mnuFileExit});
       this.mnuFile.Name = "mnuFile";
       this.mnuFile.Size = new System.Drawing.Size(48, 20);
@@ -81,7 +87,7 @@
       // mnuFileExit
       // 
       this.mnuFileExit.Name = "mnuFileExit";
-      this.mnuFileExit.Size = new System.Drawing.Size(108, 22);
+      this.mnuFileExit.Size = new System.Drawing.Size(152, 22);
       this.mnuFileExit.Text = "Выход";
       this.mnuFileExit.Click += new System.EventHandler(this.mnuFileExit_Click);
       // 
@@ -325,7 +331,7 @@
       // 
       this.splitContainer1.Panel1.Controls.Add(this.dgvAllCuts);
       this.splitContainer1.Size = new System.Drawing.Size(563, 609);
-      this.splitContainer1.SplitterDistance = 187;
+      this.splitContainer1.SplitterDistance = 155;
       this.splitContainer1.TabIndex = 2;
       // 
       // dgvAllCuts
@@ -346,8 +352,27 @@
       this.dgvAllCuts.RowHeadersVisible = false;
       this.dgvAllCuts.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
       this.dgvAllCuts.ShowEditingIcon = false;
-      this.dgvAllCuts.Size = new System.Drawing.Size(563, 187);
+      this.dgvAllCuts.Size = new System.Drawing.Size(563, 155);
       this.dgvAllCuts.TabIndex = 1;
+      // 
+      // mnuFilESaveTask
+      // 
+      this.mnuFilESaveTask.Name = "mnuFilESaveTask";
+      this.mnuFilESaveTask.Size = new System.Drawing.Size(152, 22);
+      this.mnuFilESaveTask.Text = "Сохранить...";
+      this.mnuFilESaveTask.Click += new System.EventHandler(this.mnuFilESaveTask_Click);
+      // 
+      // mnuFilELoadTask
+      // 
+      this.mnuFilELoadTask.Name = "mnuFilELoadTask";
+      this.mnuFilELoadTask.Size = new System.Drawing.Size(152, 22);
+      this.mnuFilELoadTask.Text = "Открыть...";
+      this.mnuFilELoadTask.Click += new System.EventHandler(this.mnuFilELoadTask_Click);
+      // 
+      // toolStripSeparator1
+      // 
+      this.toolStripSeparator1.Name = "toolStripSeparator1";
+      this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
       // 
       // OptiLuneCutForm
       // 
@@ -407,6 +432,9 @@
     private System.Windows.Forms.TextBox tbxCutTHick;
     private System.Windows.Forms.SplitContainer splitContainer1;
     private System.Windows.Forms.DataGridView dgvAllCuts;
+    private System.Windows.Forms.ToolStripMenuItem mnuFilESaveTask;
+    private System.Windows.Forms.ToolStripMenuItem mnuFilELoadTask;
+    private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
   }
 }
 
