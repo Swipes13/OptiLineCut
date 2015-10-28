@@ -122,25 +122,66 @@ namespace OptiLineCut.src.SMethod {
         }
       }
       while (true) {
-        int otricStr = getOtricStr();
-        if (otricStr < 0) return true;
+        List<int> otricStrs = getOtricStr();
+        if (otricStrs.Count == 0) return true;
 
-        int accColmn = chooseAcceptColumn(otricStr);
-        if (accColmn < 0) { errMsg = "Противоречива система!"; return false; }
+        int[] accElem = chooseAcceptElement(otricStrs);
+        if (accElem[0] < 0) { errMsg = "Противоречива система!"; return false; }
 
-        int accStr = chooseAcceptStr(accColmn);
-        if (accStr < 0) { errMsg = "Выбор разрешающего элемента при построении опорного плана не получился!"; return false; }
+        //int accStr = chooseAcceptStr(accColmn);
+        //if (accStr < 0) { errMsg = "Выбор разрешающего элемента при построении опорного плана не получился!"; return false; }
 
-        modifyJordanExcept(accStr, accColmn);
+        modifyJordanExcept(accElem[0], accElem[1]);
       }
     }
-    private int getOtricStr() {
-      for (int i = 0; i < table.GetLength(0) - 1; i++) {
-        if (table[i, table.GetLength(1) - 1] < 0) {
-          return i;
+    private List<int> getOtricStr() {
+      List<int> ret = new List<int>();
+
+      for (int i = 0; i < table.GetLength(0) - 1; i++) 
+        if (table[i, table.GetLength(1) - 1] < 0) 
+          ret.Add(i);
+
+      return ret;
+    }
+    private int[] chooseAcceptElement(List<int> strIndexs) {
+      int[] ret = new int[2];
+      ret[0] = ret[1] = - 1;
+      List<int> accElemClmns = new List<int>();
+
+      foreach (int ind in strIndexs) {
+        for (int i = 0; i < table.GetLength(1) - 1; i++) {
+          if (table[ind, i] < 0)
+            accElemClmns.Add(i);
         }
       }
-      return -1;
+
+      if (accElemClmns.Count == 0) return ret;
+
+      foreach (int ind in accElemClmns) {
+        List<double> divs = new List<double>();
+        List<int> divsIds = new List<int>();
+
+        for (int i = 0; i < table.GetLength(0) - 1; i++) {
+          if (table[i, table.GetLength(1) - 1] / table[i, ind] > 0) {
+            divs.Add(table[i, table.GetLength(1) - 1] / table[i, ind]);
+            divsIds.Add(i);
+          }
+        }
+
+        if (divsIds.Count <= 0) continue;
+
+        int minId = 0;
+        for (int i = 1; i < divs.Count; i++) {
+          if (divs[minId] > divs[i])
+            minId = i;
+        }
+
+        ret[0] = minId;
+        ret[1] = ind;
+
+        return ret;
+      }
+      return ret;
     }
     private int chooseAcceptColumn(int strIndex) {
       for (int i = 0; i < table.GetLength(1) - 1; i++) {

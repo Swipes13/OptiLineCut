@@ -51,12 +51,12 @@
       this.splWork = new System.Windows.Forms.SplitContainer();
       this.dgvAllCuts = new System.Windows.Forms.DataGridView();
       this.label6 = new System.Windows.Forms.Label();
-      this.label7 = new System.Windows.Forms.Label();
-      this.splMain = new System.Windows.Forms.SplitContainer();
-      this.dgvSimplexMethod = new System.Windows.Forms.DataGridView();
       this.spcSimplResult = new System.Windows.Forms.SplitContainer();
-      this.label8 = new System.Windows.Forms.Label();
+      this.dgvSimplexMethod = new System.Windows.Forms.DataGridView();
+      this.label7 = new System.Windows.Forms.Label();
       this.dgvResult = new System.Windows.Forms.DataGridView();
+      this.label8 = new System.Windows.Forms.Label();
+      this.splMain = new System.Windows.Forms.SplitContainer();
       this.menuStrip1.SuspendLayout();
       this.pnlLeft.SuspendLayout();
       this.pnlTaskMain.SuspendLayout();
@@ -69,16 +69,16 @@
       this.splWork.Panel2.SuspendLayout();
       this.splWork.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)(this.dgvAllCuts)).BeginInit();
-      ((System.ComponentModel.ISupportInitialize)(this.splMain)).BeginInit();
-      this.splMain.Panel1.SuspendLayout();
-      this.splMain.Panel2.SuspendLayout();
-      this.splMain.SuspendLayout();
-      ((System.ComponentModel.ISupportInitialize)(this.dgvSimplexMethod)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.spcSimplResult)).BeginInit();
       this.spcSimplResult.Panel1.SuspendLayout();
       this.spcSimplResult.Panel2.SuspendLayout();
       this.spcSimplResult.SuspendLayout();
+      ((System.ComponentModel.ISupportInitialize)(this.dgvSimplexMethod)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.dgvResult)).BeginInit();
+      ((System.ComponentModel.ISupportInitialize)(this.splMain)).BeginInit();
+      this.splMain.Panel1.SuspendLayout();
+      this.splMain.Panel2.SuspendLayout();
+      this.splMain.SuspendLayout();
       this.SuspendLayout();
       // 
       // menuStrip1
@@ -417,56 +417,6 @@
       this.label6.Text = "Варианты раскроя";
       this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
       // 
-      // label7
-      // 
-      this.label7.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-      this.label7.Dock = System.Windows.Forms.DockStyle.Top;
-      this.label7.Font = new System.Drawing.Font("Trebuchet MS", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-      this.label7.Location = new System.Drawing.Point(0, 0);
-      this.label7.Name = "label7";
-      this.label7.Size = new System.Drawing.Size(588, 23);
-      this.label7.TabIndex = 3;
-      this.label7.Text = "Симплекс";
-      this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-      // 
-      // splMain
-      // 
-      this.splMain.Dock = System.Windows.Forms.DockStyle.Fill;
-      this.splMain.Location = new System.Drawing.Point(0, 24);
-      this.splMain.Name = "splMain";
-      // 
-      // splMain.Panel1
-      // 
-      this.splMain.Panel1.Controls.Add(this.pnlLeft);
-      this.splMain.Panel1MinSize = 220;
-      // 
-      // splMain.Panel2
-      // 
-      this.splMain.Panel2.Controls.Add(this.splWork);
-      this.splMain.Panel2MinSize = 300;
-      this.splMain.Size = new System.Drawing.Size(812, 609);
-      this.splMain.SplitterDistance = 220;
-      this.splMain.TabIndex = 3;
-      // 
-      // dgvSimplexMethod
-      // 
-      this.dgvSimplexMethod.AllowUserToAddRows = false;
-      this.dgvSimplexMethod.AllowUserToDeleteRows = false;
-      this.dgvSimplexMethod.AllowUserToResizeColumns = false;
-      this.dgvSimplexMethod.AllowUserToResizeRows = false;
-      this.dgvSimplexMethod.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-      this.dgvSimplexMethod.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-      this.dgvSimplexMethod.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-      this.dgvSimplexMethod.ColumnHeadersVisible = false;
-      this.dgvSimplexMethod.Dock = System.Windows.Forms.DockStyle.Fill;
-      this.dgvSimplexMethod.Location = new System.Drawing.Point(0, 23);
-      this.dgvSimplexMethod.Name = "dgvSimplexMethod";
-      this.dgvSimplexMethod.ReadOnly = true;
-      this.dgvSimplexMethod.RowHeadersVisible = false;
-      this.dgvSimplexMethod.RowHeadersWidth = 10;
-      this.dgvSimplexMethod.Size = new System.Drawing.Size(588, 176);
-      this.dgvSimplexMethod.TabIndex = 4;
-      // 
       // spcSimplResult
       // 
       this.spcSimplResult.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -489,17 +439,36 @@
       this.spcSimplResult.SplitterDistance = 199;
       this.spcSimplResult.TabIndex = 5;
       // 
-      // label8
+      // dgvSimplexMethod
       // 
-      this.label8.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-      this.label8.Dock = System.Windows.Forms.DockStyle.Top;
-      this.label8.Font = new System.Drawing.Font("Trebuchet MS", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-      this.label8.Location = new System.Drawing.Point(0, 0);
-      this.label8.Name = "label8";
-      this.label8.Size = new System.Drawing.Size(588, 23);
-      this.label8.TabIndex = 4;
-      this.label8.Text = "Результат";
-      this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+      this.dgvSimplexMethod.AllowUserToAddRows = false;
+      this.dgvSimplexMethod.AllowUserToDeleteRows = false;
+      this.dgvSimplexMethod.AllowUserToResizeColumns = false;
+      this.dgvSimplexMethod.AllowUserToResizeRows = false;
+      this.dgvSimplexMethod.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+      this.dgvSimplexMethod.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
+      this.dgvSimplexMethod.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+      this.dgvSimplexMethod.ColumnHeadersVisible = false;
+      this.dgvSimplexMethod.Dock = System.Windows.Forms.DockStyle.Fill;
+      this.dgvSimplexMethod.Location = new System.Drawing.Point(0, 23);
+      this.dgvSimplexMethod.Name = "dgvSimplexMethod";
+      this.dgvSimplexMethod.ReadOnly = true;
+      this.dgvSimplexMethod.RowHeadersVisible = false;
+      this.dgvSimplexMethod.RowHeadersWidth = 10;
+      this.dgvSimplexMethod.Size = new System.Drawing.Size(588, 176);
+      this.dgvSimplexMethod.TabIndex = 4;
+      // 
+      // label7
+      // 
+      this.label7.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+      this.label7.Dock = System.Windows.Forms.DockStyle.Top;
+      this.label7.Font = new System.Drawing.Font("Trebuchet MS", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+      this.label7.Location = new System.Drawing.Point(0, 0);
+      this.label7.Name = "label7";
+      this.label7.Size = new System.Drawing.Size(588, 23);
+      this.label7.TabIndex = 3;
+      this.label7.Text = "Симплекс";
+      this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
       // 
       // dgvResult
       // 
@@ -519,6 +488,37 @@
       this.dgvResult.RowHeadersWidth = 10;
       this.dgvResult.Size = new System.Drawing.Size(588, 224);
       this.dgvResult.TabIndex = 5;
+      // 
+      // label8
+      // 
+      this.label8.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+      this.label8.Dock = System.Windows.Forms.DockStyle.Top;
+      this.label8.Font = new System.Drawing.Font("Trebuchet MS", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+      this.label8.Location = new System.Drawing.Point(0, 0);
+      this.label8.Name = "label8";
+      this.label8.Size = new System.Drawing.Size(588, 23);
+      this.label8.TabIndex = 4;
+      this.label8.Text = "Результат";
+      this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+      // 
+      // splMain
+      // 
+      this.splMain.Dock = System.Windows.Forms.DockStyle.Fill;
+      this.splMain.Location = new System.Drawing.Point(0, 24);
+      this.splMain.Name = "splMain";
+      // 
+      // splMain.Panel1
+      // 
+      this.splMain.Panel1.Controls.Add(this.pnlLeft);
+      this.splMain.Panel1MinSize = 220;
+      // 
+      // splMain.Panel2
+      // 
+      this.splMain.Panel2.Controls.Add(this.splWork);
+      this.splMain.Panel2MinSize = 300;
+      this.splMain.Size = new System.Drawing.Size(812, 609);
+      this.splMain.SplitterDistance = 220;
+      this.splMain.TabIndex = 3;
       // 
       // OptiLuneCutForm
       // 
@@ -548,16 +548,16 @@
       ((System.ComponentModel.ISupportInitialize)(this.splWork)).EndInit();
       this.splWork.ResumeLayout(false);
       ((System.ComponentModel.ISupportInitialize)(this.dgvAllCuts)).EndInit();
-      this.splMain.Panel1.ResumeLayout(false);
-      this.splMain.Panel2.ResumeLayout(false);
-      ((System.ComponentModel.ISupportInitialize)(this.splMain)).EndInit();
-      this.splMain.ResumeLayout(false);
-      ((System.ComponentModel.ISupportInitialize)(this.dgvSimplexMethod)).EndInit();
       this.spcSimplResult.Panel1.ResumeLayout(false);
       this.spcSimplResult.Panel2.ResumeLayout(false);
       ((System.ComponentModel.ISupportInitialize)(this.spcSimplResult)).EndInit();
       this.spcSimplResult.ResumeLayout(false);
+      ((System.ComponentModel.ISupportInitialize)(this.dgvSimplexMethod)).EndInit();
       ((System.ComponentModel.ISupportInitialize)(this.dgvResult)).EndInit();
+      this.splMain.Panel1.ResumeLayout(false);
+      this.splMain.Panel2.ResumeLayout(false);
+      ((System.ComponentModel.ISupportInitialize)(this.splMain)).EndInit();
+      this.splMain.ResumeLayout(false);
       this.ResumeLayout(false);
       this.PerformLayout();
 

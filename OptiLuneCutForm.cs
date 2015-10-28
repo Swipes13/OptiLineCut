@@ -13,6 +13,7 @@ using Task = OptiLineCut.src.Task;
 
 namespace OptiLineCut {
   public partial class OptiLuneCutForm : Form {
+    string path = @"c:\OperationsResearch\OptiLineCut\test\";
     private List<OrderPair> order = new List<OrderPair>();
     private double cutThick = 0.05;
     private src.SMethod.SimplexMethodSolver solver = null;
@@ -107,62 +108,10 @@ namespace OptiLineCut {
       }
     }
 
-    private void fillTableCutAndSimplexMethod(Task task) {
-      dgvAllCuts.Rows.Clear();
-      dgvAllCuts.Columns.Clear();
-
-      dgvAllCuts.Columns.Add("det", "det");
-      dgvAllCuts.Columns[0].DefaultCellStyle.BackColor = Color.LightGray;
-      for (int i = 0; i < task.AllCuts.Count; i++)
-        dgvAllCuts.Columns.Add((i + 1).ToString(), (i + 1).ToString());
-      dgvAllCuts.Columns.Add("num", "num");
-
-      String[] str = new String[task.AllCuts.Count + 2];
-      str[0] = "det";
-      for (int i = 0; i < task.AllCuts.Count; i++)
-        str[i + 1] = (i + 1).ToString();
-      str[task.AllCuts.Count + 1] = "num";
-
-      dgvAllCuts.Rows.Add(str);
-      dgvAllCuts.Rows[0].DefaultCellStyle.BackColor = Color.LightGray;
-
-      List<src.SMethod.Limitation> limits = new List<src.SMethod.Limitation>();
-      OrderPair pair = task.order.First();
-      while (pair != null) {
-        str[0] = pair.Detail.Volume.ToString();
-        str[task.AllCuts.Count + 1] = pair.Num.ToString();
-
-        limits.Add(new src.SMethod.Limitation(new double[] { }, pair.Num, src.SMethod.Limitation.Type.Equal));
-        for (int i = 0; i < task.AllCuts.Count; i++) {
-          str[i + 1] = task.AllCuts[i].CountOf(pair.Detail).ToString();
-          limits.Last().equaLine.koeffs.Add(task.AllCuts[i].CountOf(pair.Detail));
-        }
-        dgvAllCuts.Rows.Add(str);
-        pair = task.GetNextOrderPair(pair);
-      }
-      String[] str2 = new String[task.AllCuts.Count + 2];
-      dgvAllCuts.Rows.Add(str2);
-      str[0] = "left";
-      str[task.AllCuts.Count + 1] = "";
-
-      src.SMethod.EquaLine equa = new src.SMethod.EquaLine(new double[]{},0.0);
-      for (int i = 0; i < task.AllCuts.Count; i++) {
-        str[i + 1] = Math.Round(task.AllCuts[i].Left, 3).ToString().Replace(',','.');
-        equa.koeffs.Add(task.AllCuts[i].Left);
-      }
-
-      src.SMethod.Task sTask = new src.SMethod.Task(equa);
-      foreach (src.SMethod.Limitation limit in limits)
-        sTask.limitations.Add(limit);
-      solver = new src.SMethod.SimplexMethodSolver(sTask);
-
-      dgvAllCuts.Rows.Add(str);
-      solver.calculateOptimalPlan();
-    }
-
     private void mnuFilESaveTask_Click(object sender, EventArgs e) {
       SaveFileDialog sfd = new SaveFileDialog();
 
+      sfd.InitialDirectory = path;
       sfd.Filter = "task files (*.tsk)|*.tsk";
       sfd.FilterIndex = 1;
       sfd.RestoreDirectory = true;
@@ -228,7 +177,7 @@ namespace OptiLineCut {
     private void mnuFilELoadTask_Click(object sender, EventArgs e) {
       OpenFileDialog ofd = new OpenFileDialog();
 
-      ofd.InitialDirectory = "c:\\";
+      ofd.InitialDirectory = path;
       ofd.Filter = "task files (*.tsk)|*.tsk";
       ofd.FilterIndex = 1; ofd.RestoreDirectory = true;
 
@@ -325,6 +274,59 @@ namespace OptiLineCut {
       order.RemoveAt(ind);
     }
 
+    private void fillTableCutAndSimplexMethod(Task task) {
+      dgvAllCuts.Rows.Clear();
+      dgvAllCuts.Columns.Clear();
+
+      dgvAllCuts.Columns.Add("det", "det");
+      dgvAllCuts.Columns[0].DefaultCellStyle.BackColor = Color.LightGray;
+      for (int i = 0; i < task.AllCuts.Count; i++)
+        dgvAllCuts.Columns.Add((i + 1).ToString(), (i + 1).ToString());
+      dgvAllCuts.Columns.Add("num", "num");
+
+      String[] str = new String[task.AllCuts.Count + 2];
+      str[0] = "det";
+      for (int i = 0; i < task.AllCuts.Count; i++)
+        str[i + 1] = (i + 1).ToString();
+      str[task.AllCuts.Count + 1] = "num";
+
+      dgvAllCuts.Rows.Add(str);
+      dgvAllCuts.Rows[0].DefaultCellStyle.BackColor = Color.LightGray;
+
+      List<src.SMethod.Limitation> limits = new List<src.SMethod.Limitation>();
+      OrderPair pair = task.order.First();
+      while (pair != null) {
+        str[0] = pair.Detail.Volume.ToString();
+        str[task.AllCuts.Count + 1] = pair.Num.ToString();
+
+        limits.Add(new src.SMethod.Limitation(new double[] { }, pair.Num, src.SMethod.Limitation.Type.Equal));
+        for (int i = 0; i < task.AllCuts.Count; i++) {
+          str[i + 1] = task.AllCuts[i].CountOf(pair.Detail).ToString();
+          limits.Last().equaLine.koeffs.Add(task.AllCuts[i].CountOf(pair.Detail));
+        }
+        dgvAllCuts.Rows.Add(str);
+        pair = task.GetNextOrderPair(pair);
+      }
+      String[] str2 = new String[task.AllCuts.Count + 2];
+      dgvAllCuts.Rows.Add(str2);
+      str[0] = "left";
+      str[task.AllCuts.Count + 1] = "";
+
+      src.SMethod.EquaLine equa = new src.SMethod.EquaLine(new double[] { }, 0.0);
+      for (int i = 0; i < task.AllCuts.Count; i++) {
+        str[i + 1] = Math.Round(task.AllCuts[i].Left, 3).ToString().Replace(',', '.');
+        equa.koeffs.Add(task.AllCuts[i].Left);
+      }
+
+      src.SMethod.Task sTask = new src.SMethod.Task(equa);
+      foreach (src.SMethod.Limitation limit in limits)
+        sTask.limitations.Add(limit);
+      solver = new src.SMethod.SimplexMethodSolver(sTask);
+
+      dgvAllCuts.Rows.Add(str);
+      solver.calculateOptimalPlan();
+    }
+
     private void fillTableSimplexMethod(DataGridView dgv, src.SMethod.SimplexMethodSolver slv) {
       dgv.Rows.Clear();
       dgv.Columns.Clear();
@@ -372,6 +374,10 @@ namespace OptiLineCut {
       dgv.Rows.Clear();
       dgv.Columns.Clear();
 
+      if (slv.errMsg != "OK") {
+        return;
+      }
+
       String[] strs = new String[2];
       strs[0] = "Число заготовок:";
       strs[1] = "Разрез:";
@@ -388,7 +394,7 @@ namespace OptiLineCut {
         strs[1] = "";
         foreach (OrderPair p in task.AllCuts[slv.xsCol[i] - 1].Pairs) {
           for (int j = 0; j < p.Num; j++) {
-            strs[1] += ((Detail1D)p.Detail).Length;
+            strs[1] += (((Detail1D)p.Detail).Length).ToString().Replace(',','.');
             if (j == p.Num - 1) {
               if (p != task.AllCuts[slv.xsCol[i] - 1].Pairs.Last())
                 strs[1] += ",";
@@ -403,7 +409,7 @@ namespace OptiLineCut {
       strs[0] = strs[1] = "";
       dgv.Rows.Add(strs);
       strs[0] = "Остатки:";
-      strs[1] = slv.table[slv.table.GetLength(0) - 1, slv.table.GetLength(1) - 1].ToString().Replace(',','.');
+      strs[1] = Math.Abs(slv.table[slv.table.GetLength(0) - 1, slv.table.GetLength(1) - 1]).ToString().Replace(',','.');
       dgv.Rows.Add(strs);
       dgv.Rows[dgv.Rows.Count-1].DefaultCellStyle.BackColor = Color.Gray;
     }
