@@ -10,7 +10,7 @@ namespace OptiLineCut.src {
     Detail mainDetail;
 
     private double sectThick;
-    public double Left { get { return left; } private set { } }
+    public double Left { get { return left; } private set { left = value; if (left < 0) { left = 0.0; } } }
     private double left;
     public List<OrderPair> Pairs = new List<OrderPair>();
 
@@ -87,6 +87,22 @@ namespace OptiLineCut.src {
       foreach (OrderPair pair in Pairs)
         retCut.Pairs.Add(new OrderPair(pair.Detail, pair.Num));
       return retCut;
+    }
+    public bool Add(Detail det) {
+      if (Left >= det.Volume) {
+        bool exist = false;
+        foreach (OrderPair p in Pairs) {
+          if (p.Detail.Volume == det.Volume) {
+            p.Num++;
+            exist = true;
+            break;
+          }
+        }
+        if (!exist) Pairs.Add(new OrderPair(det, 1));
+        Left -= (det.Volume + sectThick);
+        return true;
+      }
+      return false;
     }
   }
 }

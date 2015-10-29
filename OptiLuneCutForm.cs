@@ -13,6 +13,7 @@ using Task = OptiLineCut.src.Task;
 
 namespace OptiLineCut {
   public partial class OptiLuneCutForm : Form {
+    const double EPS = 0.0000005;
     string path = @"c:\OperationsResearch\OptiLineCut\test\";
     private List<OrderPair> order = new List<OrderPair>();
     private double cutThick = 0.05;
@@ -378,23 +379,40 @@ namespace OptiLineCut {
         return;
       }
 
-      String[] strs = new String[2];
+      List<OrderPair> savedOrder = new List<OrderPair>();
+      foreach (OrderPair p in order) 
+        savedOrder.Add(new OrderPair(new Detail1D(pgrdOrderDetail, new double[]{p.Detail.Volume}),p.Num));
+
+      String[] strs = new String[3];
       strs[0] = "Число заготовок:";
       strs[1] = "Разрез:";
+      strs[2] = "Остатки:";
 
-      dgv.Columns.Add("", ""); dgv.Columns.Add("", "");
+      dgv.Columns.Add("", ""); dgv.Columns.Add("", ""); dgv.Columns.Add("", "");
 
       dgv.Rows.Add(strs);
       dgv.Rows[0].DefaultCellStyle.BackColor = Color.LightGray;
-      dgv.Columns[0].Width = 150;
+      dgv.Columns[0].Width = 150;dgv.Columns[2].Width = 100;
+
+      double allLeft = 0.0;
 
       for (int i = 0; i < slv.xsCol.Count - 1; i++) {
         if(slv.table[i, slv.table.GetLength(1) - 1] == 0.0) continue;
-        strs[0] = slv.table[i, slv.table.GetLength(1) - 1].ToString().Replace(',', '.');
+
+        int rounded = (int)slv.table[i, slv.table.GetLength(1) - 1];
+        
+        strs[0] = rounded.ToString();
         strs[1] = "";
         foreach (OrderPair p in task.AllCuts[slv.xsCol[i] - 1].Pairs) {
           for (int j = 0; j < p.Num; j++) {
             strs[1] += (((Detail1D)p.Detail).Length).ToString().Replace(',','.');
+            foreach (OrderPair oP in order) {
+              if (((Detail1D)oP.Detail).Length == ((Detail1D)p.Detail).Length) {
+                oP.Num -= rounded;
+                break;
+              }
+            }
+
             if (j == p.Num - 1) {
               if (p != task.AllCuts[slv.xsCol[i] - 1].Pairs.Last())
                 strs[1] += ",";
@@ -403,15 +421,75 @@ namespace OptiLineCut {
               strs[1] += ",";
           }
         }
-        //strs[1] = slv.xsCol[i].ToString();
+        strs[2] = Math.Round(task.AllCuts[slv.xsCol[i] - 1].Left, 3).ToString().Replace(',', '.');
+        allLeft += task.AllCuts[slv.xsCol[i] - 1].Left * rounded;
         dgv.Rows.Add(strs);
       }
-      strs[0] = strs[1] = "";
+
+      // ЖАДНЫЙ 
+      List<src.Cut> leftCuts = greedyAlgorithm();
+      foreach (Cut cut in leftCuts) {
+        strs[0] = "1"; strs[1] = "";
+        foreach (OrderPair p in cut.Pairs) {
+          for (int j = 0; j < p.Num; j++) {
+            strs[1] += (((Detail1D)p.Detail).Length).ToString().Replace(',', '.');
+            foreach (OrderPair oP in order) {
+              if (((Detail1D)oP.Detail).Length == ((Detail1D)p.Detail).Length) {
+                oP.Num -= 1;
+                break;
+              }
+            }
+
+            if (j == p.Num - 1) {
+              if (p != cut.Pairs.Last())
+                strs[1] += ",";
+            }
+            else
+              strs[1] += ",";
+          }
+        }
+        strs[2] = Math.Round(cut.Left, 3).ToString().Replace(',', '.');
+        allLeft += cut.Left;
+        dgv.Rows.Add(strs);
+      }
+
+      strs[0] = strs[1] = strs[2] = "";
       dgv.Rows.Add(strs);
-      strs[0] = "Остатки:";
-      strs[1] = Math.Abs(slv.table[slv.table.GetLength(0) - 1, slv.table.GetLength(1) - 1]).ToString().Replace(',','.');
+      strs[0] = "Общие:";
+      strs[2] = allLeft.ToString().Replace(',', '.');
       dgv.Rows.Add(strs);
       dgv.Rows[dgv.Rows.Count-1].DefaultCellStyle.BackColor = Color.Gray;
+
+      order = savedOrder;
+    }
+
+    private List<src.Cut> greedyAlgorithm() {
+      List<src.Cut> allCuts = new List<Cut>();
+
+      for (int i = order.Count - 1; i >= 0; i--)
+        if (order[i].Num == 0) order.RemoveAt(i);
+      if (order.Count == 0) return allCuts;
+
+      order.OrderByDescending(x => x.Detail.Volume);
+
+      Cut cut = new Cut((Detail1D)pgrdTest.SelectedObject, order.First().Detail, cutThick, ((Detail1D)pgrdTest.SelectedObject).Length);
+
+      int index = 0;
+      while (order.Count != 0) {
+        if (index == order.Count) {
+          allCuts.Add(cut);
+          cut = new Cut((Detail1D)pgrdTest.SelectedObject, order.First().Detail, cutThick, ((Detail1D)pgrdTest.SelectedObject).Length);
+          index = 0;
+        }
+
+        if (cut.Add(order[index].Detail)) {
+          order[index].Num--;
+          if (order[index].Num == 0) order.RemoveAt(index);
+        }
+        else index++;
+      }
+      if (cut.Left != ((Detail1D)pgrdTest.SelectedObject).Length) allCuts.Add(cut);
+      return allCuts;
     }
   }
 }
