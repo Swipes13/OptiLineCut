@@ -428,6 +428,7 @@ namespace OptiLineCut {
 
       // ЖАДНЫЙ 
       List<src.Cut> leftCuts = greedyAlgorithm();
+      double greedyCutLeft = 0.0;
       foreach (Cut cut in leftCuts) {
         strs[0] = "1"; strs[1] = "";
         foreach (OrderPair p in cut.Pairs) {
@@ -449,14 +450,14 @@ namespace OptiLineCut {
           }
         }
         strs[2] = Math.Round(cut.Left, 3).ToString().Replace(',', '.');
-        allLeft += cut.Left;
+        greedyCutLeft += cut.Left;
         dgv.Rows.Add(strs);
       }
 
       strs[0] = strs[1] = strs[2] = "";
       dgv.Rows.Add(strs);
       strs[0] = "Общие:";
-      strs[2] = allLeft.ToString().Replace(',', '.');
+      strs[2] = Math.Round(allLeft, 3).ToString().Replace(',', '.') + " + " + Math.Round(greedyCutLeft, 3).ToString().Replace(',', '.');
       dgv.Rows.Add(strs);
       dgv.Rows[dgv.Rows.Count-1].DefaultCellStyle.BackColor = Color.Gray;
 

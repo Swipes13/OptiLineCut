@@ -112,7 +112,7 @@ namespace OptiLineCut.src.SMethod {
       for (int i = 0; i < nulStr.Count(); i++) {
         if (nulStr[i]) {
           nulStr[i] = false;
-          int accCol = chooseAcceptColumn(i);
+          int accCol = chooseAcceptColumnSupport(i);
           if (accCol < 0) {
             errMsg = "generateSupportPlan failed! acceptCol";
             return false;
@@ -126,10 +126,7 @@ namespace OptiLineCut.src.SMethod {
         if (otricStrs.Count == 0) return true;
 
         int[] accElem = chooseAcceptElement(otricStrs);
-        if (accElem[0] < 0) { errMsg = "Противоречива система!"; return false; }
-
-        //int accStr = chooseAcceptStr(accColmn);
-        //if (accStr < 0) { errMsg = "Выбор разрешающего элемента при построении опорного плана не получился!"; return false; }
+        if (accElem[0] < 0) { errMsg = "Противоречивая система!"; return false; }
 
         modifyJordanExcept(accElem[0], accElem[1]);
       }
@@ -151,7 +148,8 @@ namespace OptiLineCut.src.SMethod {
       foreach (int ind in strIndexs) {
         for (int i = 0; i < table.GetLength(1) - 1; i++) {
           if (table[ind, i] < 0)
-            accElemClmns.Add(i);
+            if (!accElemClmns.Contains(i))
+              accElemClmns.Add(i);
         }
       }
 
@@ -183,6 +181,28 @@ namespace OptiLineCut.src.SMethod {
       }
       return ret;
     }
+    private int chooseAcceptColumnSupport(int str) {
+      List<double> divs = new List<double>();
+      List<int> divsIds = new List<int>();
+
+      for (int i = 0; i < table.GetLength(1) - 1; i++) {
+        double val = table[str, table.GetLength(1) - 1] / table[str, i];
+        if (table[str, i] >= 0.0) {
+          divs.Add(val);
+          divsIds.Add(i);
+        }
+      }
+
+      if (divsIds.Count <= 0) return -1;
+
+      int minId = 0;
+      for (int i = 1; i < divs.Count; i++) {
+        if (divs[minId] > divs[i])
+          minId = i;
+      }
+
+      return minId;
+    }
     private int chooseAcceptColumn(int strIndex) {
       for (int i = 0; i < table.GetLength(1) - 1; i++) {
         if (table[strIndex, i] > 0)
@@ -196,7 +216,7 @@ namespace OptiLineCut.src.SMethod {
 
       for (int str = 0; str < table.GetLength(0) - 1; str++) {
         double value = table[str, table.GetLength(1) - 1] / table[str, colIndex];
-        if (value > 0.0) { values.Add(value); valuesIds.Add(str); }
+        if (table[str, colIndex] >= 0.0) { values.Add(value); valuesIds.Add(str); }
       }
       if (valuesIds.Count <= 0) return -1;
 
